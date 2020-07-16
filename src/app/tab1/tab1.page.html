@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Business
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,9 +9,28 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="large">Business</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-searchbar (ionInput)="filterNews($event)" placeholder="Filter Business News"></ion-searchbar><br/>
+  <center><ion-spinner *ngIf="newsList.length === 0" color="primary"></ion-spinner></center>
+
+  <ion-card *ngFor="let item of newsList; let i = index">
+    <ion-card-header>
+      <ion-img [src]="item.urlToImage"></ion-img>
+      <ion-card-title>{{ item.title}}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <div class="author-title">By {{ item.author}} at {{ item.publishedAt | date}}</div><br/>
+      {{ item.description }}
+      <a [href]="item.url">Read More</a>
+    </ion-card-content>
+
+    <ion-row>
+      <ion-col (click)="reactToPost(true, item.url, i)" class="text-center"><ion-icon [ngClass]="{'like': item.like === true }" name="thumbs-up"></ion-icon></ion-col>
+      <ion-col (click)="reactToPost(false, item.url, i)" class="text-center"><ion-icon [ngClass]="{'dislike': item.like === false}" name="thumbs-down"></ion-icon></ion-col> 
+    </ion-row>
+  </ion-card>
 </ion-content>
